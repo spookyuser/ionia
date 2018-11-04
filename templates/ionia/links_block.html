@@ -1,0 +1,12 @@
+{% block links %}
+    {# Links at bottom of sidebar, see context_processors.py #}
+    <div class="tc">
+        <ul class="pa0 list f6 ">
+            {% for link in template_links %}
+                <li>
+                    <a class="link black underline-hover lh-copy" href="{{ link.href }}">{{ link.title }}</a>
+                <li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

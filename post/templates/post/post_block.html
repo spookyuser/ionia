@@ -1,0 +1,44 @@
+{% load humanize avatar_tags  %}
+
+{% block post %}
+    <div class="flex flex-row mv2 items-start ">
+
+        {# Heart + Like#}
+        <div class="flex flex-column pt1 items-center w1">
+
+            {# Heart #}
+            {% include "post/heart_block.html" %}
+
+            {# Like count #}
+            <span class="f6 gray">{{ post.liked_by.count }}</span>
+        </div>
+
+        {# Profile pic #}
+        {% avatar post.user 80 class="w2 h2 mt1 br-100 mh1" %}
+
+        {# Post info + Post #}
+        <div class="flex flex-column justify-center pl1 ">
+
+            {# Post #}
+            <span class="f5">{{ post.post|urlize }}</span>
+
+
+            {# User + Island + Time #}
+            <div class="f6 lh-copy light-silver">
+                <span >
+                    <a class="link light-silver underline-hover"
+                       href="{% url 'user:detail' post.user.username %}">{{ post.user.username }}</a>
+                </span>
+                <span >
+                    on
+                    <a class="link light-silver underline-hover"
+                       href="{% url 'island:detail' post.island.name %}">/i/{{ post.island.name }}</a>
+                </span>
+                <span > |
+                    <a class="link light-silver underline-hover "
+                       href="{% url 'post:detail' post.island.name post.id %}">{{ post.created_at|naturaltime }}</a>
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

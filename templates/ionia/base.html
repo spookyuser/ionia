@@ -1,0 +1,67 @@
+{% load static %}
+
+{# Base html for project #}
+<!DOCTYPE html>
+<html>
+    <style type="text/css">
+        html {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .heart svg:hover {
+            fill: gray;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .min-w0 {
+            min-width: 0;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        .flex-shrink {
+            flex-shrink: 1;
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>
+            {% block title %}ionia{% endblock %}
+        </title>
+        <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static "css/tachyons.min.css" %}">
+
+        {# Only include character count script if user can post #}
+        {% if user.is_authenticated %}
+            <script type="text/javascript" src="{% static 'js/base.js' %}" defer></script>
+        {% endif %}
+    </head>
+
+    <header class=" mw9 center">
+        <nav class=" flex flex-row mv1 w-100-l w-90 center items-center">
+            <h1 class="w-25 ml4-l tc-l normal mv0 ">
+                <a class="f2 link underline-hover black" href="{% url 'post:index' %}"
+                   title="Home">ionia</a>
+            </h1>
+            <div class="w-75 tr db dn-l">
+                {% if not user.is_authenticated %}
+                    <a class="mr2  dark-gray link underline-hover black " href="{% url 'user:register' %}">Register</a>
+                    <a class="mr2  dark-gray link underline-hover black" href="{% url 'login' %}">Sign in</a>
+                {% else %}
+                    <a class="mr2  dark-gray link underline-hover black"
+                       href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <body>{% block body %}{% endblock %}</body>
+</html>

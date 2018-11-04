@@ -1,0 +1,10 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block title %}{{ post.post }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+    {# Template for a single post #}
+    <div class="mt1 pa2 outline">
+        {% include 'post/post_block.html' %}
+    </div>
+{% endblock %}

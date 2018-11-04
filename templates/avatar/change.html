@@ -1,0 +1,24 @@
+{% extends 'ionia/body_with_base.html' %}
+{% load avatar_tags %}
+
+{# Change avatar template#}
+{% block content %}
+    <div class="flex flex-row justify-center items-center">
+        <div>
+            {% avatar user 150 class="br-100 tc center" %}
+            {% if not avatars %}
+                <p>You haven't uploaded an avatar yet. Please upload one now.</p>
+            {% endif %}
+        </div>
+
+
+        <form class="pa4 flex flex-column" enctype="multipart/form-data" method="POST" action="{% url 'avatar_add' %}">
+            {% csrf_token %}
+            {% for field in  upload_avatar_form %}
+                <span class="dark-red mv1">{{ field.errors|striptags }}</span>
+                {{ field }}
+            {% endfor %}
+            <input type="submit" class="w-two-thirds self-start h2 mv1" value="Upload"/>
+        </form>
+    </div>
+{% endblock %}

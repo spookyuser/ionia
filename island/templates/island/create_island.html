@@ -1,0 +1,11 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block title %}Create and island | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="w-50-ns">
+        <h2 class="mv1">Create an island</h2>
+        {% include "island/create_island_block.html" %}
+    </div>
+
+{% endblock %}

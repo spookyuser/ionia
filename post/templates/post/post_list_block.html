@@ -1,0 +1,29 @@
+{% block post_list %}
+
+    {# Generic post list template #}
+    {% if post_list %}
+        {% for post in post_list %}
+            {% include 'post/post_block.html' %}
+        {% endfor %}
+
+    {% else %}
+        <p>No posts are available.</p>
+    {% endif %}
+
+    {# Post list sort #}
+    {% if post_list.has_next or post_list.has_previous %}
+        <div class="ttu gray tc f6 pb3">
+            {% if post_list.has_previous %}
+                <a class="link gray underline-hover" href="?page={{ post_list.previous_page_number }}">Back</a>
+                {% ifnotequal post_list.number post_list.paginator.num_pages %}
+                    &#183;
+                {% endifnotequal %}
+            {% endif %}
+
+            {% if post_list.has_next %}
+                <a class="dib link gray underline-hover" href="?page={{ post_list.next_page_number }}">More</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}

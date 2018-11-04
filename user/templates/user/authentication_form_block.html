@@ -1,0 +1,15 @@
+{% load user_extras widget_tweaks %}
+
+{# Embedded login/register form for the project #}
+{% block authentication_form %}
+    {% authentication_form as form %}
+    <form method="post" class="flex flex-column">
+        {% csrf_token %}
+        {% render_field form.username class="pv1 pa2 mv1" placeholder=form.username.label %}
+        {% render_field form.password1|attr:"name:password"|attr:"id:password" class="pv1 pa2 mv1" placeholder="Password >10 characters" %}
+        <div class="flex">
+            <input class="pv1 mv1 w-50" type="submit" formaction="{% url 'user:register' %}" value="Register">
+            <input class="pv1 ml1 mv1 w-50" type="submit" formaction="{% url 'login' %}?next={{ request.path }}" value="Sign In">
+        </div>
+    </form>
+{% endblock %}

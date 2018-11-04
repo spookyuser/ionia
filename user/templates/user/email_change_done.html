@@ -1,0 +1,13 @@
+{% extends 'ionia/body_with_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Email change complete | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2>Update email complete</h2>
+
+    <div class="pb1 mb2">
+        <span class="gray">Your new email is: </span>
+        <span class="black">{{ user.email }}</span>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% block island_info %}
+    {# Subscribe button #}
+    <div class="f5">
+        {% if user.is_authenticated %}
+            {% if island in user.subscribes.all %}
+                <form class="dib" action="{% url 'island:change_subscribe' island.name "unsubscribe" %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Unsubscribe">
+                </form>
+            {% else %}
+                <form class="dib" action="{% url 'island:change_subscribe' island.name "subscribe" %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Subscribe">
+                </form>
+            {% endif %}
+        {% endif %}
+        <span class="dib normal f5 gray"> {{ island.subscribed_by.count }} subscriber{{ island.subscribed_by.count|pluralize }}</span>
+    </div>
+{% endblock %}

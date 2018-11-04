@@ -1,0 +1,19 @@
+{% block user_info %}
+    {# Follow button + number of followers #}
+    <div class="f5">
+        {% if user.is_authenticated and user_object != user %}
+            {% if user_object in user.follows.all %}
+                <form class="dib" action="{% url 'user:change_follow' user_object.username "unfollow" %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Unfollow">
+                </form>
+            {% else %}
+                <form class="dib" action="{% url 'user:change_follow' user_object.username "follow" %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Follow {{ user_object.username }}">
+                </form>
+            {% endif %}
+        {% endif %}
+        <span class="gray dib">{{ user_object.followed_by.count }} Follower{{ user_object.followed_by.count|pluralize }}</span>
+    </div>
+{% endblock %}

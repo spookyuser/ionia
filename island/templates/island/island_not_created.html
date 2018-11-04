@@ -1,0 +1,13 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block title %}"{{ submitted_island }}" doesn't exist | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="tc">
+        <h2 class="mb2 tc normal">"<span class="b">{{ submitted_island }}" </span>doesn't exist yet</h2>
+        <span class="tc f5">Do you want to create it?</span>
+    </div>
+    <div class="w-50-ns center mt3">
+        {% include "island/create_island_block.html" %}
+    </div>
+{% endblock %}

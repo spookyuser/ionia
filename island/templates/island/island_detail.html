@@ -1,0 +1,45 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block title %}/i/{{ island.name }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+    {# Subscribe + Description #}
+    <div class="flex-l flex-row-l ">
+        <h2 class="lh-copy-ns mv0-ns mt2 normal v-mid mr3-ns tc tl-l f4 w-two-thirds-l">
+            <a class="b dib">/i/{{ island.name }}</a>
+            {% if island.description %}
+                <p class="dib i f5 ma0 dark-gray"> - {{ island.description }}</p>
+            {% endif %}
+        </h2>
+        <div>
+            {% include 'island/island_info_block.html' %}
+        </div>
+
+    </div>
+
+    {# Sorts #}
+    <div class="lh-copy pt2 ">
+        <h3 class="mv0 f6 ttu normal ">
+            {% for sort in sorts %}
+                <a class="underline-hover link black{% ifequal selected_sort sort %}  b  {% endifequal %}"
+                   href="{% url 'island:detail_sort' island.name sort %}">{{ sort }}</a>
+
+                {% if not forloop.last %}
+                    |
+                {% endif %}
+            {% endfor %}
+        </h3>
+    </div>
+    <hr>
+
+    {# Mobile submit block, not in sidebar #}
+    {% if user.is_authenticated %}
+        <div class="db dn-l flex flex-row justify-center">
+            {% include 'post/submit_post_block.html' %}
+        </div>
+    {% endif %}
+
+    {# Posts #}
+    {% include 'post/post_list_block.html' %}
+
+{% endblock %}

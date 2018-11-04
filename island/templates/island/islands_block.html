@@ -1,0 +1,16 @@
+{% block islands %}
+    {# Generic islands block: Top/My islands #}
+    <div class="pl1 f6 ">
+        <h4 class="mb0 pb0 lh-copy">{{ title }}</h4>
+        <ul class="list mt1 pa0">
+            {% for island in islands %}
+                <li >
+                    <a class="dib black link underline-hover"
+                       href="{% url 'island:detail' island.name %}">/i/{{ island.name }}</a>
+                    <span class="dib gray">| {{ island.subscribed_by.count }} subscribers</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr>
+{% endblock %}

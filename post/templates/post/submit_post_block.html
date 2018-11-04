@@ -1,0 +1,45 @@
+{% load avatar_tags widget_tweaks post_extras %}
+
+{% block submit_post %}
+    {# Submit post block #}
+    <div class="flex flex-column justify-center pv2 min-w0 ">
+
+        {# Username + Island + Post #}
+        <form action="{% url 'post:new' %}?next={{ request.path }}" method="post" class=" min-w0 flex flex-column">
+            {% post_form as form %}
+            {% csrf_token %}
+
+            <div class="flex flex-row items-center flex-wrap">
+
+                {# Profile pic #}
+                {% avatar user 80 class="w2 h2 mv1 br-100 mr2" %}
+
+                {# Username #}
+                <span class="b i f6 lh-copy"><a class="black underline-hover link"
+                                                href="{% url 'user:detail' user.username %}">{{ user.username }}</a><span
+                        class="f6 gray normal ph1 ">•</span></span>
+
+                {# Island #}
+                {% if not island %}
+                    <div class="items-center flex-grow flex-shrink flex " style="white-space: nowrap">
+                        <span class="f6 gray">/i/</span>
+                        {% render_field form.island id="" class="flex-shrink flex-grow f6" %}
+                    </div>
+                {% else %}
+                    {% render_field form.island id="" class="f6" value=island.name type="hidden" %}
+                    <span class="f6 gray">/i/{{ island.name }}</span>
+                {% endif %}
+            </div>
+
+            {# Post #}
+            <div class="relative">
+                {% render_field form.post id="" class="w-100 h4 pt1 mt1 f6" placeholder="Write something" %}
+
+                {# Character counter #}
+                <span class="counter absolute bottom-0 right-0 pa2 gray">{{ form.post.field.max_length }}</span>
+            </div>
+
+            <input class="pv1 mv1" type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock %}

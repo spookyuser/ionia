@@ -1,0 +1,41 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block content %}
+    {# Sorts and list type #}
+    <div class="pb1">
+        <h2 class="lh-copy mv0 ttu normal f6 ">
+            {% for list_type in list_types %}
+                <a class="black link underline-hover {% ifequal selected_list_type list_type %} b  {% endifequal %}"
+                   href="{% url 'post:index_list' list_type selected_sort %}">{{ list_type|title }}</a>
+
+                {% if not forloop.last %}
+                    <span >|</span>
+                {% endif %}
+            {% endfor %}
+        </h2>
+
+        <h3 class="mv0 f6 ttu normal ">
+            {% for sort in sorts %}
+                <a class="underline-hover link black{% ifequal selected_sort sort %}  b  {% endifequal %}"
+                   href="{% url 'post:index_list' selected_list_type sort %}">{{ sort }}</a>
+
+                {% if not forloop.last %}
+                    |
+                {% endif %}
+            {% endfor %}
+        </h3>
+    </div>
+
+    <hr>
+
+    {# Mobile submit block, not in sidebar#}
+    {% if user.is_authenticated %}
+        <div class="db dn-l flex flex-row justify-center" id="submit_post_center">
+            {% include 'post/submit_post_block.html' %}
+        </div>
+    {% endif %}
+
+
+    {# Posts #}
+    {% include 'post/post_list_block.html' with post_list=post_list %}
+{% endblock %}

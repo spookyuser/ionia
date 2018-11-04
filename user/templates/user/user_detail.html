@@ -1,0 +1,21 @@
+{% extends 'ionia/body_with_base.html' %}
+{% load humanize avatar_tags %}
+
+{% block title %}{{ user_object.username }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="flex flex-row items-center justify-between">
+        <div class="w-25-l w-50">
+            <h2 class="mb0 f3 mt0 dark-gray">{{ user_object.username }}</h2>
+            <h3 class="f6 gray mt1 mb2">Joined: {{ user_object.created_at|naturaltime }}</h3>
+            {% include 'user/user_info_block.html' %}
+        </div>
+        {% avatar user_object 80 class="w3 h3 br-100 pr1" %}
+    </div>
+
+    <hr>
+
+    <div>
+        {% include 'post/post_list_block.html' with  post_list=user_object.post_set.all %}
+    </div>
+{% endblock %}

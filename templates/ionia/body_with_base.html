@@ -1,0 +1,38 @@
+{% extends 'ionia/base.html' %}
+
+{# Base body with sidebar #}
+{% block body %}
+    <section class="flex flex-row justify-center mw9 center">
+
+        {# Sidebar #}
+        <aside class="center mw6 w-25 dn db-l">
+            {% if not user.is_authenticated %}
+                {# Show Register/Sign In form if user is not authenticated #}
+                {% include 'user/authentication_form_block.html' %}
+                {% if top_islands %}
+                    {% include 'island/islands_block.html' with title="Top islands" islands=top_islands %}
+                {% endif %}
+            {% else %}
+                {# Else, show logged in sidebar#}
+                <div id="submit_post_sidebar">
+                    {% include 'post/submit_post_block.html' %}
+                </div>
+                {% if top_islands %}
+                    {% include 'island/islands_block.html' with title="Top islands" islands=top_islands %}
+                {% endif %}
+
+                {% if user.subscribes.all.count > 0 %}
+                    {% include 'island/islands_block.html' with title="My islands" islands=user.subscribes.all %}
+                {% endif %}
+            {% endif %}
+            {% include 'ionia/links_block.html' %}
+
+            {# Add footer links to bottom #}
+            {% include 'ionia/footer_links_block.html' %}
+        </aside>
+
+        <main role="main" class="w-two-thirds-l w-90 center ">
+            {% block content %}{% endblock %}
+        </main>
+    </section>
+{% endblock %}

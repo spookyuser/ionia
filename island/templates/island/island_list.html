@@ -1,0 +1,22 @@
+{% extends 'ionia/body_with_base.html' %}
+
+{% block title %}Explore Islands | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2 class="mt0">Explore Islands</h2>
+
+    {# Complete island list #}
+    <div>
+        {% for island in island_list %}
+            <div class="pa2 mv2 outline">
+                <a class="b black link underline-hover"
+                   href="{% url 'island:detail' island.name %}">/i/{{ island.name }}</a>
+                <span class="gray"> |  {{ island.subscribed_by.count }} subscriber{{ island.subscribed_by.count|pluralize }}</span>
+
+                {% if island.description %}
+                    <p class="ma1">{{ island.description }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

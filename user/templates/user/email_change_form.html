@@ -1,0 +1,29 @@
+{% extends 'ionia/body_with_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Change email | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h2>Update email</h2>
+    {% if not user.email  %}
+        <p>If you add your email we can reset your password if you forget it</p>
+    {% elif not form.email.errors %}
+        <div class="gray pb1 mb2">
+            <span >Email: {{ user.email }}</span>
+        </div>
+    {% endif %}
+
+
+    <form class="w-two-thirds" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <span class="red">
+            {% if form.email.errors %}
+                {{ form.email.errors }}
+            {% endif %}
+        </span>
+
+        {% render_field form.email class="pv1" placeholder=form.email.label %}
+        <input class="dib" class="pv1" type="submit" value="Change email">
+    </form>
+{% endblock %}

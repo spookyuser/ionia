@@ -1,0 +1,34 @@
+{% extends 'ionia/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Sign in | {{ block.super }}{% endblock %}
+
+{# Root login page template, used for /login/ or if there are errors logging in on index #}
+{% block body %}
+    <div class="w-50-ns mw6 w-90 center db">
+        {% if form.errors %}
+            <p class="red">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+            {% else %}
+                <p>Please Sign in to see this page.</p>
+            {% endif %}
+        {% endif %}
+
+        <form class="flex flex-column center" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% render_field form.username class="f6 h2" placeholder=form.username.label %}
+            {% render_field form.password class="f6 h2 mv2" placeholder=form.password.label %}
+            <div class="tc">
+                <input type="submit" class="h2 w4" value="Sign in"/>
+                <span class="gray">or</span>
+                <a class="black link underline-hover" href="{% url 'password_reset' %}">Reset password</a>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </div>
+        </form>
+    </div>
+{% endblock %}

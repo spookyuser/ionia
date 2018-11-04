@@ -1,0 +1,22 @@
+{% extends 'ionia/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Register | {{ block.super }}{% endblock %}
+
+{# Root register page template, used for /register/ or if there are errors registering on index #}
+{% block body %}
+    <div class="w-50-ns w-90 pa2  mw6 center ">
+        <h1 class="center fw2 mb2">Register now</h1>
+        <div class="red">
+            {{ form.non_field_errors }}
+            {{ form.username.errors }}
+            {{ form.password1.errors }}
+        </div>
+        <form class="flex flex-column " method="post">
+            {% csrf_token %}
+            {% render_field form.username class="pv1 pa2 mv1" placeholder=form.username.label %}
+            {% render_field form.password1|attr:"name:password"|attr:"id:password" class="pv1 pa2 mv1"  placeholder="Password >10 characters" %}
+            <input class="pv1 mv1" type="submit" value="Register">
+        </form>
+    </div>
+{% endblock %}

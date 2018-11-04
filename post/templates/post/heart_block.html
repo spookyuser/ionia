@@ -1,0 +1,11 @@
+{% block heart %}
+    {% if post in user.likes.all %}
+        <a href="{% url 'post:change_like' post.id "remove" %}?next={{ request.path }}" class="heart w1 gray">
+            {% include "post/heart_svg.html" with heart_fill="currentColor" %}
+        </a>
+    {% else %}
+        <a href="{% url 'post:change_like' post.id "add" %}?next={{ request.path }}" class="heart w1 gray">
+            {% include "post/heart_svg.html" with heart_fill="none" %}
+        </a>
+    {% endif %}
+{% endblock %}
