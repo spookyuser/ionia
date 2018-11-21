@@ -1,6 +1,7 @@
 # Pipfile dependencies
 # Prod only dependencies are seprated by the "linux" flag
 # See-Also: https://github.com/pypa/pipenv/issues/335
+
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
@@ -15,17 +16,17 @@ django = "*"
 django-widget-tweaks = "*"
 django-axes = "*"
 django-configurations = "*"
+django-heroku = "*"
+psycopg2 = "*"
 # Prod
 ############################################################
-"psycopg2" = {version = "*", platform_system = "== 'Linux'"}
-gunicorn = {version = "*", platform_system = "== 'Linux'"}
-django-heroku = {version = "*", platform_system = "== 'Linux'"}
-django-storages = {version = "*", platform_system = "== 'Linux'"}
-"boto3" = {version = "*", platform_system = "== 'Linux'"}
-"pylibmc" = {version = "*", platform_system = "== 'Linux'"}
-django-cachalot = {version = "*", platform_system = "== 'Linux'"}
-django-redis = {version = "*", platform_system = "== 'Linux'"}
-sentry-sdk =  {version = "*", platform_system = "== 'Linux'"}
+gunicorn = {version = "*",platform_system = "== 'Linux'"}
+django-storages = {version = "*",platform_system = "== 'Linux'"}
+boto3 = {version = "*",platform_system = "== 'Linux'"}
+pylibmc = {version = "*",platform_system = "== 'Linux'"}
+django-cachalot = {version = "*",platform_system = "== 'Linux'"}
+django-redis = {version = "*",platform_system = "== 'Linux'"}
+sentry-sdk = {version = "*",platform_system = "== 'Linux'"}
 
 [dev-packages]
 # Dev

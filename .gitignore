@@ -142,4 +142,5 @@ pip-selfcheck.json
 ####################CUSTOM###########################
 
 .idea/
+.vscode/
 avatars/

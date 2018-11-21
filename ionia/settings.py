@@ -14,12 +14,7 @@ https://github.com/jazzband/django-configurations
 """
 
 import os
-
-import django_heroku
-import sentry_sdk
 from configurations import Configuration, pristinemethod
-from sentry_sdk.integrations.django import DjangoIntegration
-
 from .cache import Cache
 
 
@@ -206,6 +201,8 @@ class Dev(Base):
 class Prod(Base):
     """Production only settings"""
 
+    import django_heroku
+
     BASE_DIR = Base.BASE_DIR
 
     # Prod urls
@@ -280,6 +277,12 @@ class Prod(Base):
         https://django-configurations.readthedocs.io/en/stable/patterns/
         """
         super(Prod, cls).post_setup()
-        sentry_sdk.init(
-            dsn=os.environ.get("SENTRY_DSN"), integrations=[DjangoIntegration()]
-        )
+        try:
+            import sentry_sdk
+            from sentry_sdk.integrations.django import DjangoIntegration
+
+            sentry_sdk.init(
+                dsn=os.environ.get("SENTRY_DSN"), integrations=[DjangoIntegration()]
+            )
+        except ImportError:
+            pass
