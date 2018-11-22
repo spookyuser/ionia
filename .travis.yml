@@ -9,5 +9,4 @@ script:
   - "python manage.py migrate"
   - "python manage.py check"
 env:
- - DJANGO_CONFIGURATION=Prod
- - SECRET_KEY=Secret
+ - DJANGO_CONFIGURATION=Prod SECRET_KEY=Secret
