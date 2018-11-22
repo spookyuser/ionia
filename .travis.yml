@@ -6,3 +6,5 @@ install:
   - "pip install pipenv"
   - "pipenv install"
 script: "python manage.py check"
+env:
+ - DJANGO_CONFIGURATION=Prod
