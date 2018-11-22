@@ -5,6 +5,8 @@ dist: xenial
 install:
   - "pip install pipenv"
   - "pipenv install"
-script: "python manage.py check"
+script: 
+  - "python manage.py migrate"
+  - "python manage.py check"
 env:
  - DJANGO_CONFIGURATION=Prod
