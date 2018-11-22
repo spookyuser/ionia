@@ -59,5 +59,8 @@ class Cache:
             }
         except:
             return {
-                "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}
+                "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+                "AXES_CACHE": {
+                    "BACKEND": "django.core.cache.backends.dummy.DummyCache"
+                },
             }
