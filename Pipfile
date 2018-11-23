@@ -32,6 +32,7 @@ sentry-sdk = {version = "*",platform_system = "== 'Linux'"}
 # Dev
 pylint-django = "*"
 django-livereload-server = "*"
+prospector = "*"
 
 [requires]
 python_version = "3.7"
