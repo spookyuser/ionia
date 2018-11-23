@@ -17,7 +17,7 @@ before_script:
   - psql -c 'create database travisdb;' -U postgres
   - python manage.py migrate --noinput
 install:
-  - "pip install pipenv"
-  - "pipenv install"
+  - pip install pipenv
+  - pipenv install
 script:
-  - "python manage.py check"
+  - python manage.py check
