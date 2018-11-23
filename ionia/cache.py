@@ -18,9 +18,9 @@ class Cache:
     def get_cache():
         try:
             servers = os.environ["MEMCACHIER_SERVERS"]
-            username = os.environ["MEMCACHIER_USERNAME"]
-            password = os.environ["MEMCACHIER_PASSWORD"]
-            return {
+            username = os.environ.get("MEMCACHIER_USERNAME")
+            password = os.environ.get("MEMCACHIER_PASSWORD")
+            cache = {
                 "default": {
                     "BACKEND": "django.core.cache.backends.memcached.PyLibMCCache",
                     # TIMEOUT is not the connection timeout! It's the default expiration
@@ -30,8 +30,6 @@ class Cache:
                     "LOCATION": servers,
                     "OPTIONS": {
                         "binary": True,
-                        "username": username,
-                        "password": password,
                         "behaviors": {
                             # Enable faster IO
                             "no_block": True,
@@ -57,6 +55,10 @@ class Cache:
                     "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
                 },
             }
+            if password and username:
+                cache["default"]["OPTIONS"]["username"] = username
+                cache["default"]["OPTIONS"]["password"] = password
+            return cache
         except:
             return {
                 "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}
