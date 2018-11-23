@@ -12,8 +12,7 @@ env:
     - SECRET_KEY=Secret
     - DATABASE_URL=postgres://postgres@localhost/travisdb
     - MEMCACHIER_SERVERS=127.0.0.1:11211
-    - MEMCACHIER_USERNAME=memcached
-    - REDIS_URL=redis://127.0.0.1:6379
+    - REDIS_URL=redis://127.0.0.1:6379/0
 before_script:
   - psql -c 'create database travisdb;' -U postgres
   - python manage.py migrate --noinput
