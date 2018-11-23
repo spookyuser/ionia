@@ -19,7 +19,7 @@ class Cache:
         try:
             servers = os.environ["MEMCACHIER_SERVERS"]
             username = os.environ["MEMCACHIER_USERNAME"]
-            password = os.environ["MEMCACHIER_PASSWORD"]
+            password = os.environ.get("MEMCACHIER_PASSWORD")
             return {
                 "default": {
                     "BACKEND": "django.core.cache.backends.memcached.PyLibMCCache",
@@ -31,7 +31,7 @@ class Cache:
                     "OPTIONS": {
                         "binary": True,
                         "username": username,
-                        "password": password,
+                        "password": password or "",
                         "behaviors": {
                             # Enable faster IO
                             "no_block": True,
