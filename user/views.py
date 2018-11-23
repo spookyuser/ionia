@@ -51,7 +51,9 @@ class RegisterView(generic.CreateView):
             form.cleaned_data.get("username"),
             form.cleaned_data.get("password1"),
         )
-        new_user = authenticate(self.request, username=username, password=password)
+        new_user = authenticate(
+            request=self.request, username=username, password=password
+        )
         self.add_defaults(new_user)
         login(self.request, new_user)
         return valid
@@ -94,10 +96,11 @@ class RegisterView(generic.CreateView):
 
 class DetailView(generic.DetailView):
     """User Detail View"""
+
     model = User
     context_object_name = "user_object"
 
-    def get_object(self, **kwargs):
+    def get_object(self, queryset=None):
         return get_object_or_404(User, username=self.kwargs["pk"])
 
 
@@ -113,6 +116,7 @@ def change_follow(request, username, action):
 
 class ChangeEmail(generic.UpdateView):
     """Change or add user email."""
+
     model = User
     fields = ["email"]
     template_name = "user/email_change_form.html"
@@ -120,14 +124,15 @@ class ChangeEmail(generic.UpdateView):
     def get_success_url(self):
         return reverse("user:email_change_done")
 
-    def get_object(self, **kwargs):
+    def get_object(self, queryset=None):
         return self.request.user
 
 
 class ChangeEmailDone(generic.TemplateView):
     """Redirect when email change is completed."""
+
     template_name = "user/email_change_done.html"
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         return super().dispatch(*args, **kwargs)

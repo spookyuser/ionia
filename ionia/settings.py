@@ -14,7 +14,7 @@ https://github.com/jazzband/django-configurations
 """
 
 import os
-from configurations import Configuration, pristinemethod
+from configurations import Configuration
 from .cache import Cache
 
 
