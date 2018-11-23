@@ -18,7 +18,6 @@ before_script:
   - python manage.py migrate --noinput
 install:
   - pip install pipenv
-  - pipenv install --dev
+  - pipenv install
 script:
   - python manage.py check
-  - prospector
