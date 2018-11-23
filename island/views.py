@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -16,6 +16,7 @@ from .models import Island
 
 class DetailView(generic.DetailView):
     """Island Detail View"""
+
     model = Island
     context_object_name = "island"
 
@@ -38,7 +39,7 @@ class DetailView(generic.DetailView):
             )
         return super(DetailView, self).dispatch(request, *args, **kwargs)
 
-    def get_object(self, **kwargs):
+    def get_object(self, queryset=None):
         """Use iexact search"""
         return Island.get_island(self.kwargs["pk"])
 
@@ -60,6 +61,7 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
     Add `created_by` on `form_valid`, from
     https://stackoverflow.com/a/33001010/1649917
     """
+
     model = Island
     template_name = "island/create_island.html"
     form_class = IslandCreationForm

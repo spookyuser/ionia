@@ -59,7 +59,7 @@ class Cache:
                 cache["default"]["OPTIONS"]["username"] = username
                 cache["default"]["OPTIONS"]["password"] = password
             return cache
-        except:
+        except KeyError:
             return {
                 "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}
             }

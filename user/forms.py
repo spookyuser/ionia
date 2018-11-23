@@ -15,10 +15,11 @@ FIELD_NAME_MAPPING = {"password1": "password", "password2": "password"}
 
 class IoniaUserCreationForm(UserCreationForm):
     """User creation form"""
+
     class Meta(UserCreationForm.Meta):
         model = User
 
     def add_prefix(self, field_name):
         """Look up field name (password1/2), return original if not found"""
         field_name = FIELD_NAME_MAPPING.get(field_name, field_name)
-        return super(UserCreationForm, self).add_prefix(field_name)
+        return super(IoniaUserCreationForm, self).add_prefix(field_name)

@@ -7,14 +7,15 @@ class EmailNullField(citext.EmailField):
 
     From https://stackoverflow.com/a/1934764/1649917 - mightyhal
     """
+
     description = "EmailField that stores NULL but returns ''."
 
+    # pylint: disable=unused-argument
     def from_db_value(self, value, expression, connection, context):
         """Gets value right out of the db and changes it if its ``None``."""
         if value is None:
             return ""
-        else:
-            return value
+        return value
 
     def to_python(self, value):
         """Gets value right out of the db or an instance, and changes it if its ``None``."""
@@ -33,6 +34,5 @@ class EmailNullField(citext.EmailField):
         if value == "":
             # If Django tries to save an empty string, send the db None (NULL).
             return None
-        else:
-            # Otherwise, just pass the value.
-            return value
+        # Otherwise, just pass the value.
+        return value
