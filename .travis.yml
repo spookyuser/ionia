@@ -16,9 +16,9 @@ env:
     - REDIS_URL=redis://127.0.0.1:6379
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - python manage.py migrate
 install:
   - "pip install pipenv"
   - "pipenv install"
 script:
-  - "python manage.py migrate"
   - "python manage.py check"
