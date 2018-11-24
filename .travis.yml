@@ -21,3 +21,4 @@ install:
   - pipenv install
 script:
   - python manage.py check
+  - pytest --ds=ionia.settings -v
