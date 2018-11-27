@@ -4,6 +4,11 @@ from django.db import connection, models
 
 from ..models import CommonInfo
 
+""""Setup for testing abstract models.
+
+See-Also: https://medium.com/@nazrulworld/testing-abstract-model-in-django-df6e59bdd7a6
+"""
+
 
 class CommonInfoImplementation(CommonInfo):
     class Meta:
