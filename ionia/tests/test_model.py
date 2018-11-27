@@ -1,22 +1,27 @@
 import datetime
 import pytest
 
+from ..models import CommonInfo
 from .conftest import CommonInfoImplementation
 
 
 @pytest.mark.django_db
 class TestCommonInfo:
     def test_generates_id(self):
-        assert CommonInfoImplementation.objects.first().id
+        common_info = CommonInfoImplementation.objects.first()
+        assert common_info.id
 
     def test_id_is_sequential(self):
-        assert (
-            CommonInfoImplementation.objects.all()[0].id
-            < CommonInfoImplementation.objects.all()[1].id
-        )
+        first = CommonInfoImplementation.objects.all()[0]
+        second = CommonInfoImplementation.objects.all()[1]
+        assert first.id < second.id
+
+    def test_ordering(self):
+        ordering = CommonInfo._meta.ordering
+        print(ordering)
+        assert ordering[0] == "-id"
 
     def test_created_at(self):
-        assert (
-            datetime.datetime.now()
-            - CommonInfoImplementation.objects.first().created_at()
-        )
+        now = datetime.datetime.now()
+        common_info = CommonInfoImplementation.objects.first()
+        assert now - common_info.created_at()

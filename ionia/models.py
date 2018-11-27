@@ -24,6 +24,7 @@ class CommonInfo(models.Model):
         https://github.com/spookyUnknownUser/python-fity3/blob/master/README.rst#django
         https://stackoverflow.com/q/16925129/1649917
     """
+
     id = models.BigIntegerField(primary_key=True, default=get_id, editable=False)
 
     def created_at(self):
@@ -32,5 +33,6 @@ class CommonInfo(models.Model):
 
     class Meta:
         """Order by most recently created"""
+
         abstract = True
         ordering = ["-id"]
