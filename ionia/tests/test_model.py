@@ -24,4 +24,5 @@ class TestCommonInfo:
     def test_created_at(self):
         now = datetime.datetime.now()
         common_info = CommonInfoImplementation.objects.first()
-        assert now - common_info.created_at()
+        delta = now - common_info.created_at()
+        assert delta.microseconds > 0
