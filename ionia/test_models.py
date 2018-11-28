@@ -3,7 +3,7 @@ import datetime
 import pytest
 from django.db import IntegrityError
 
-from ..models import CommonInfo, get_id
+from .models import CommonInfo, get_id
 from .conftest import CommonInfoImplementation
 
 

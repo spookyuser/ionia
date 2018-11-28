@@ -1,7 +1,7 @@
 import pytest
 from django.db import IntegrityError
 
-from ..models import User
+from .models import User
 
 
 @pytest.fixture(scope="module")

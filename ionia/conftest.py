@@ -3,7 +3,7 @@ import pytest
 import time
 from django.db import connection
 
-from ..models import CommonInfo
+from .models import CommonInfo
 
 """"Setup for testing abstract models.
 
