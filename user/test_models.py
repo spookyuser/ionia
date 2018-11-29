@@ -4,20 +4,15 @@ from django.core import mail
 from .models import User
 
 
-@pytest.fixture(scope="module")
-def user_fixture(django_db_blocker):
-    with django_db_blocker.unblock():
-        User.objects.create_user("test", "test@email.com", "test")
-
-
 @pytest.fixture(autouse=True)
 def email_backend_setup(settings):
     settings.EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 
-@pytest.mark.usefixtures("user_fixture")
+
 @pytest.mark.django_db
 class TestUser:
+
     def test_username_label(self):
         """From https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing#Models"""
         user = User.objects.first()
@@ -75,7 +70,7 @@ class TestUser:
 
     def test_username_is_unique(self):
         with pytest.raises(IntegrityError):
-            User.objects.create_user("test", "test")
+            User.objects.create_user(username="test", password="test")
 
     def test_email_is_unique(self):
         with pytest.raises(IntegrityError):

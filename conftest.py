@@ -3,7 +3,10 @@ import pytest
 import time
 from django.db import connection
 
-from .models import CommonInfo
+from ionia.models import CommonInfo
+from user.models import User
+from island.models import Island
+from post.models import Post
 
 """"Setup for testing abstract models.
 
@@ -25,4 +28,7 @@ def django_db_setup(django_db_setup, django_db_blocker):
         for _ in range(0, 2):
             time.sleep(0.1)
             CommonInfoImplementation.objects.create()
+        user = User.objects.create_user("test", "test@email.com", "test")
+        island = Island.objects.create(created_by=user, name="test")
+        Post.objects.create(post="test", user=user, island=island)
 
