@@ -83,7 +83,7 @@ class TestUser:
 
     def test_multiple_users_can_have_no_email(self):
         try:
-            User.objects.create_user("test_4", "test")
-            User.objects.create_user("test_5", "test")
+            User.objects.create_user(username="test_4", password="test")
+            User.objects.create_user(username="test_5", password="test")
         except IntegrityError:
             raise pytest.fail("Raised {0}".format(IntegrityError))
