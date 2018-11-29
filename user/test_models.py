@@ -80,3 +80,10 @@ class TestUser:
     def test_email_is_unique(self):
         with pytest.raises(IntegrityError):
             User.objects.create_user("test_3", "test@email.com", "test")
+
+    def test_multiple_users_can_have_no_email(self):
+        try:
+            User.objects.create_user("test_4", "test")
+            User.objects.create_user("test_5", "test")
+        except IntegrityError:
+            raise pytest.fail("Raised {0}".format(IntegrityError))
