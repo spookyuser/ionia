@@ -73,10 +73,6 @@ class TestUser:
         max_length = user._meta.get_field("username").max_length
         assert max_length == 20
 
-    # def test_user_already_exists(self):
-    #     with pytest.raises(IntegrityError):
-    #         User.objects.create_user("test", "test@email.com", "test")
-
     def test_username_is_unique(self):
         with pytest.raises(IntegrityError):
             User.objects.create_user("test", "test")
