@@ -1,6 +1,6 @@
 import pytest
 from django.db import IntegrityError
-
+from django.core import mail
 from .models import User
 
 
@@ -8,6 +8,11 @@ from .models import User
 def user_fixture(django_db_blocker):
     with django_db_blocker.unblock():
         User.objects.create_user("test", "test@email.com", "test")
+
+
+@pytest.fixture(autouse=True)
+def email_backend_setup(settings):
+    settings.EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 
 @pytest.mark.usefixtures("user_fixture")
@@ -54,9 +59,28 @@ class TestUser:
         user_label = user._meta.verbose_name_raw
         assert user_label == "user"
 
-    def test_user_already_exists(self):
-        with pytest.raises(IntegrityError):
-            User.objects.create_user("test", "test@email.com", "test")
+    def test_email_is_optional(self):
+        user = User.objects.create_user(username="test_2", password="test")
+        assert user
 
-    def test_user_with_null_email(self):
-        User.objects.create_user(username="test_2", password="test")
+    def test_email_sends(self):
+        user = User.objects.get_by_natural_key("test")
+        user.email_user("subject", "message", "from@email.com")
+        assert len(mail.outbox) == 1
+
+    def test_username_max_length(self):
+        user = User.objects.first()
+        max_length = user._meta.get_field("username").max_length
+        assert max_length == 20
+
+    # def test_user_already_exists(self):
+    #     with pytest.raises(IntegrityError):
+    #         User.objects.create_user("test", "test@email.com", "test")
+
+    def test_username_is_unique(self):
+        with pytest.raises(IntegrityError):
+            User.objects.create_user("test", "test")
+
+    def test_email_is_unique(self):
+        with pytest.raises(IntegrityError):
+            User.objects.create_user("test_3", "test@email.com", "test")
