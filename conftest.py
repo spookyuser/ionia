@@ -32,3 +32,11 @@ def django_db_setup(django_db_setup, django_db_blocker):
         island = Island.objects.create(created_by=user, name="test")
         Post.objects.create(post="test", user=user, island=island)
 
+        test_island = Island.objects.create(name="test_island", created_by=user)
+        time.sleep(0.1)
+        test_island_2 = Island.objects.create(name="test_island_2", created_by=user)
+
+        Post.objects.create(post="test_post", user=user, island=test_island)
+        time.sleep(0.1)
+        Post.objects.create(post="test_post_2", user=user, island=test_island_2)
+
