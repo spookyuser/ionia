@@ -22,6 +22,8 @@ class IoniaUserCreationForm(UserCreationForm):
         model = User
 
     def add_prefix(self, field_name):
-        """Look up field name (password1/2), return original if not found"""
+        """Look up field name (password1/2), return original if not found
+        TODO: Be more explicit in variable names
+        """
         field_name = FIELD_NAME_MAPPING.get(field_name, field_name)
         return super(IoniaUserCreationForm, self).add_prefix(field_name)
