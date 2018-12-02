@@ -39,4 +39,3 @@ def django_db_setup(django_db_setup, django_db_blocker):
         Post.objects.create(post="test_post", user=user, island=test_island)
         time.sleep(0.1)
         Post.objects.create(post="test_post_2", user=user, island=test_island_2)
-

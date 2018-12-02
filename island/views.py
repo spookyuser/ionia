@@ -83,7 +83,9 @@ class ListView(generic.ListView):
 
 @login_required
 def change_subscribe(request, island, action):
-    """Subscribe or unsubscribe a user to an Island given an action"""
+    """Subscribe or unsubscribe a user to an Island given an action
+    TODO: Change URL pattern from /subscribe/subscribe
+    """
     selected_island = get_object_or_404(Island, name=island)
     if action == "unsubscribe":
         request.user.subscribes.remove(selected_island)
