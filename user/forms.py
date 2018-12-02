@@ -4,6 +4,8 @@ FIELD_NAME_MAPPING:
     Map password1 and password2 to password so we
     can continue using the django user creation form
     and not have a password confirmation input
+    
+    TODO: Fix documentation, actually maps password to password1 and password2
 """
 
 from django.contrib.auth import get_user_model
