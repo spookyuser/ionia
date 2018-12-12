@@ -1,5 +1,6 @@
 import pytest
 from island.models import Island
+import time
 from django.urls import reverse
 
 """From https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing#Views"""
@@ -88,4 +89,26 @@ class TestIslandChangeSubscribe:
         )
         island = Island.objects.get(name="test_island")
         assert island.created_by not in island.subscribed_by.all()
+
+
+class TestIslandDetailView:
+    def test_view_exists_at_desired_location(self, client):
+        response = client.get("/i/test_island/")
+        assert response.status_code == 200
+
+    def test_view_accessible_by_name(self, client):
+        response = client.get(reverse("island:detail", args=["test_island"]))
+        assert response.status_code == 200
+
+    def test_creation_form_for_invalid_island(self, client):
+        response = client.get(reverse("island:detail", args=["island_does_not_exist"]))
+        assert response.context["form"]
+
+    # def test_view_is_paginated(self, client):
+    #     response = client.get(reverse("island:detail", args=["test_island"]))
+    #     assert response.context["is_paginated"]
+
+    # def test_pagination_is_250(self, client):
+    #     response = client.get(reverse("island:detail", args=["test_island"]))
+    #     assert len(response.context["post_list"]) <= 250
 

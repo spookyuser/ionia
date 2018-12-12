@@ -1,8 +1,9 @@
 # pylint: skip-file
 import pytest
+from model_mommy import mommy
 import time
 from django.db import connection
-
+import fity3
 from ionia.models import CommonInfo
 from user.models import User
 from island.models import Island
@@ -20,22 +21,68 @@ class CommonInfoImplementation(CommonInfo):
         db_table = "test_table"
 
 
+class Now(object):
+    """Setup for testing snowflake id
+    If we use the get_id method from the class it can't generate true ids
+    fast enough
+    """
+
+    def __init__(self, now):
+        self.now = now
+        self.log = []
+
+    def __call__(self):
+        return self.now
+
+    def sleep(self, n):
+        self.log.append(n)
+        self.now += n
+        return self
+
+    def clear(self):
+        self.log = []
+
+
+class Generator:
+    @staticmethod
+    def get_generator():
+        now = Now(1413401558001)
+        return fity3.generator(1, sleep=now.sleep, now=now)
+
+    @staticmethod
+    def get_id(generator):
+        return next(generator)
+
+
 @pytest.fixture(scope="session")
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
+        generator = Generator.get_generator()
         with connection.schema_editor(atomic=True) as schema_editor:
             schema_editor.create_model(CommonInfoImplementation)
         for _ in range(0, 2):
-            time.sleep(0.1)
-            CommonInfoImplementation.objects.create()
-        user = User.objects.create_user("test", "test@email.com", "test")
-        island = Island.objects.create(created_by=user, name="test")
-        Post.objects.create(post="test", user=user, island=island)
+            CommonInfoImplementation.objects.create(id=Generator.get_id(generator))
 
-        test_island = Island.objects.create(name="test_island", created_by=user)
-        time.sleep(0.1)
-        test_island_2 = Island.objects.create(name="test_island_2", created_by=user)
+        user = User.objects.create_user(
+            id=Generator.get_id(generator),
+            username="test",
+            email="test@email.com",
+            password="test",
+        )
+        island = Island.objects.create(
+            id=Generator.get_id(generator), created_by=user, name="test"
+        )
+        mommy.make(
+            "island.Island",
+            id=Generator.get_id(generator),
+            created_by=user,
+            _quantity=2,
+        )
+        mommy.make(
+            "post.Post",
+            id=Generator.get_id(generator),
+            user=user,
+            island=island,
+            _quantity=3,
+        )
 
-        Post.objects.create(post="test_post", user=user, island=test_island)
-        time.sleep(0.1)
-        Post.objects.create(post="test_post_2", user=user, island=test_island_2)
