@@ -1,6 +1,8 @@
 import pytest
 from island.models import Island
 import time
+from user.models import User
+from model_mommy import mommy
 from django.urls import reverse
 
 """From https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing#Views"""
@@ -61,34 +63,35 @@ class TestIslandChangeSubscribe:
 
     def test_accessible_by_name(self, client):
         client.login(username="test", password="test")
+        island = Island.objects.first()
         response = client.get(
-            reverse("island:change_subscribe", args=["test_island", "subscribe"])
+            reverse("island:change_subscribe", args=[island.name, "subscribe"])
         )
-        assert response.status_code == 302 and response.url == "/i/test_island/"
+        assert response.status_code == 302 and response.url == "/i/" + island.name + "/"
 
     def test_exists_at_desired_location(self, client):
         client.login(username="test", password="test")
-        response = client.get("/i/test_island/subscribe/subscribe/")
-        assert response.status_code == 302 and response.url == "/i/test_island/"
+        island = Island.objects.first()
+        response = client.get("/i/" + island.name + "/subscribe/subscribe/")
+        assert response.status_code == 302 and response.url == "/i/" + island.name + "/"
 
     def test_adds_subscription(self, client):
         client.login(username="test", password="test")
-        client.get(
-            reverse("island:change_subscribe", args=["test_island", "subscribe"])
-        )
-        island = Island.objects.get(name="test_island")
-        assert island.created_by in island.subscribed_by.all()
+        user = User.objects.get(username="test")
+        island = mommy.make("island.Island")
+        client.get(reverse("island:change_subscribe", args=[island.name, "subscribe"]))
+        assert user in island.subscribed_by.all()
 
     def test_removes_subscription(self, client):
         client.login(username="test", password="test")
+        user = User.objects.get(username="test")
+        island = Island.objects.first()
+        client.get(reverse("island:change_subscribe", args=[island.name, "subscribe"]))
+        assert user in island.subscribed_by.all()
         client.get(
-            reverse("island:change_subscribe", args=["test_island", "subscribe"])
+            reverse("island:change_subscribe", args=[island.name, "unsubscribe"])
         )
-        client.get(
-            reverse("island:change_subscribe", args=["test_island", "unsubscribe"])
-        )
-        island = Island.objects.get(name="test_island")
-        assert island.created_by not in island.subscribed_by.all()
+        assert user not in island.subscribed_by.all()
 
 
 class TestIslandDetailView:
