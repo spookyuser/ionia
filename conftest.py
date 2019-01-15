@@ -1,6 +1,7 @@
 # pylint: skip-file
 import pytest
 from model_mommy import mommy
+from model_mommy.recipe import Recipe, foreign_key
 import time
 from django.db import connection
 import fity3
@@ -51,6 +52,7 @@ class Generator:
 
     @staticmethod
     def get_id(generator):
+        print("Got ID!")
         return next(generator)
 
 
@@ -58,31 +60,33 @@ class Generator:
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         generator = Generator.get_generator()
-        with connection.schema_editor(atomic=True) as schema_editor:
-            schema_editor.create_model(CommonInfoImplementation)
-        for _ in range(0, 2):
-            CommonInfoImplementation.objects.create(id=Generator.get_id(generator))
-
         user = User.objects.create_user(
             id=Generator.get_id(generator),
             username="test",
             email="test@email.com",
             password="test",
         )
+
+        with connection.schema_editor(atomic=True) as schema_editor:
+            schema_editor.create_model(CommonInfoImplementation)
+
+        for index in range(0, 2):
+            CommonInfoImplementation.objects.create(id=Generator.get_id(generator))
+            Island.objects.create(
+                id=Generator.get_id(generator),
+                created_by=user,
+                name=str(index) + "island",
+            )
+
         island = Island.objects.create(
             id=Generator.get_id(generator), created_by=user, name="test"
         )
-        mommy.make(
-            "island.Island",
-            id=Generator.get_id(generator),
-            created_by=user,
-            _quantity=2,
-        )
-        mommy.make(
-            "post.Post",
-            id=Generator.get_id(generator),
-            user=user,
-            island=island,
-            _quantity=3,
-        )
+
+        for index in range(0, 100):
+            Post.objects.create(
+                id=Generator.get_id(generator),
+                user=user,
+                island=island,
+                post=str(index) + "_post",
+            )
 

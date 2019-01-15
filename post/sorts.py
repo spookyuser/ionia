@@ -1,5 +1,6 @@
 from datetime import datetime
 from math import log
+from operator import itemgetter, attrgetter
 
 
 class Hot:
@@ -9,6 +10,7 @@ class Hot:
         https://github.com/reddit-archive/reddit/blob/753b17407e9a9dca09558526805922de24133d53/r2/r2/lib/db/_sorts.pyx
         https://medium.com/hacking-and-gonzo/how-reddit-ranking-algorithms-work-ef111e33d0d9
     """
+
     name = "hot"
 
     @staticmethod
@@ -29,17 +31,17 @@ class Hot:
 
         From:
             https://github.com/croach/tutsplus-django/blob/f4daa71e6248f7131226bc03d041f1cc798d6b04/stories/views.py
+            https://docs.python.org/3/howto/sorting.html#the-old-way-using-decorate-sort-undecorate
         """
         ranked_posts = sorted(
-            [
-                (self.sort(post.liked_by.count(), post.created_at()), post)
-                for post in posts
-            ],
+            posts,
+            key=lambda post: self.sort(post.liked_by.count(), post.created_at()),
             reverse=True,
         )
-        return [post for _, post in ranked_posts]
+        return ranked_posts
 
 
 class New:
     """New sort ranking"""
+
     name = "new"
