@@ -60,6 +60,13 @@ class Generator:
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         generator = Generator.get_generator()
+
+        with connection.schema_editor(atomic=True) as schema_editor:
+            schema_editor.create_model(CommonInfoImplementation)
+
+        for index in range(0, 2):
+            CommonInfoImplementation.objects.create(id=Generator.get_id(generator))
+
         user = User.objects.create_user(
             id=Generator.get_id(generator),
             username="test",
@@ -67,22 +74,11 @@ def django_db_setup(django_db_setup, django_db_blocker):
             password="test",
         )
 
-        with connection.schema_editor(atomic=True) as schema_editor:
-            schema_editor.create_model(CommonInfoImplementation)
-
-        for index in range(0, 2):
-            CommonInfoImplementation.objects.create(id=Generator.get_id(generator))
-            Island.objects.create(
-                id=Generator.get_id(generator),
-                created_by=user,
-                name=str(index) + "island",
-            )
-
         island = Island.objects.create(
             id=Generator.get_id(generator), created_by=user, name="test"
         )
 
-        for index in range(0, 100):
+        for index in range(0, 260):
             Post.objects.create(
                 id=Generator.get_id(generator),
                 user=user,
