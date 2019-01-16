@@ -10,11 +10,6 @@ from post.sorts import New, Hot
 
 @pytest.mark.django_db
 class TestPost:
-
-    # post = models.CharField(max_length=240)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # island = models.ForeignKey(Island, on_delete=models.CASCADE)
-
     def test_post_label(self):
         post = Post.objects.first()
         field_label = post._meta.get_field("post").verbose_name
@@ -65,10 +60,11 @@ class TestPost:
         for post in user_posts:
             assert user in post.user.followed_by
 
-    # def test_get_island_posts_returns_island_posts(self):
-    #     island = Island.objects.first()
-    #     for post in island_posts:
-    #         assert post.island == island
+    def test_get_island_posts_returns_island_posts(self):
+        island = Island.objects.first()
+        island_posts = Post.get_island_posts(sort=None, island=island)
+        for post in island_posts:
+            assert post.island == island
 
     def test_get_anonymous_posts_returns_all_posts(self):
         all_posts = Post.objects.all()
@@ -76,12 +72,13 @@ class TestPost:
         assert len(all_posts) == len(anonymous_posts)
 
     def test_sort_posts_by_hot_returns_hot(self):
+        #TODO: Add test that verifies the Hot sorting algorithm itself
         hot = Hot()
         posts = Post.objects.all()
         sorted_posts = Post.sort_posts(sort=hot.name, posts=posts)
         hot_sorted_posts = hot.order_by(posts)
-        # for index, post in enumerate(sorted_posts):
-        #     assert hot_sorted_posts[index].id == post.id
+        for index, post in enumerate(sorted_posts):
+            assert hot_sorted_posts[index].id == post.id
 
     def test_sort_posts_by_new_returns_new(self):
         new = New()

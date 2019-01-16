@@ -77,11 +77,12 @@ class TestIslandChangeSubscribe:
         response = client.get("/i/" + island.name + "/subscribe/subscribe/")
         assert response.status_code == 302 and response.url == "/i/" + island.name + "/"
 
-    # def test_adds_subscription(self, client):
-    #     client.login(username="test", password="test")
-    #     user = User.objects.get(username="test")
-    #     client.get(reverse("island:change_subscribe", args=[island.name, "subscribe"]))
-    #     assert user in island.subscribed_by.all()
+    def test_adds_subscription(self, client):
+        client.login(username="test", password="test")
+        user = User.objects.get(username="test")
+        island = Island.objects.create(name="test_subscribe", created_by=user)
+        client.get(reverse("island:change_subscribe", args=[island.name, "subscribe"]))
+        assert user in island.subscribed_by.all()
 
     def test_removes_subscription(self, client):
         client.login(username="test", password="test")
