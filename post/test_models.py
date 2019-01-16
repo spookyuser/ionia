@@ -2,7 +2,6 @@ from django.db import models
 import pytest
 
 from .models import Post
-from model_mommy import mommy
 from island.models import Island
 from user.models import User
 import time
@@ -68,7 +67,6 @@ class TestPost:
 
     # def test_get_island_posts_returns_island_posts(self):
     #     island = Island.objects.first()
-    #     island_posts = mommy.make(Post, island=island, _quantity=10)
     #     for post in island_posts:
     #         assert post.island == island
 

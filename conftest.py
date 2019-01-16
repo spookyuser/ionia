@@ -1,7 +1,5 @@
 # pylint: skip-file
 import pytest
-from model_mommy import mommy
-from model_mommy.recipe import Recipe, foreign_key
 import time
 from django.db import connection
 import fity3

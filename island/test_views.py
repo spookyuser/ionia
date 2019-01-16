@@ -5,7 +5,6 @@ from django.core.serializers import serialize
 import json
 from user.models import User
 from post.models import Post
-from model_mommy import mommy
 from django.urls import reverse
 
 """From https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing#Views"""
@@ -81,7 +80,6 @@ class TestIslandChangeSubscribe:
     # def test_adds_subscription(self, client):
     #     client.login(username="test", password="test")
     #     user = User.objects.get(username="test")
-    #     island = mommy.make("island.Island")
     #     client.get(reverse("island:change_subscribe", args=[island.name, "subscribe"]))
     #     assert user in island.subscribed_by.all()
 
