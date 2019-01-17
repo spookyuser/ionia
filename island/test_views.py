@@ -116,3 +116,7 @@ class TestIslandDetailView:
         response = client.get(reverse("island:detail", args=["test"]))
         assert len(response.context["post_list"]) <= 250
 
+    def test_lists_all_posts(self, client):
+        response = client.get((reverse("island:detail", args=["test"]) + "?page=2"))
+        assert len(response.context["post_list"]) == 10
+
