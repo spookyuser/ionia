@@ -29,6 +29,11 @@ pipenv shell
 python manage.py runserver
 ```
 
+## testing
+```bash
+pytest --ds=ionia.settings --dc=Dev --disable-pytest-warnings --verbose
+```
+
 ## deploying
 at the moment, ionia is deployed using heroku for the webserver and s3 for storing avatars, to deploy it in the current state you need a heroku dyno with postgres, memcache (for cachalot) and redis (for session storage), you'll also need an s3 bucket for the avatars
 
