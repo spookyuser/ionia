@@ -9,6 +9,10 @@
 ## what
 a website i think i would like to use
 
+<img width="1122" alt="image" src="https://user-images.githubusercontent.com/16196262/196995513-a2dc5ad9-10b6-48a0-87a9-0a9e3a320668.png"> 
+
+^^ This is what it used to look like, was supposed to be like if reddit and twitter had a baby
+
 ## how
 using Django, I tried in node but I realised I was slowly rebuilding Django 
 
